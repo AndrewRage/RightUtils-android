@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.rightutils.rightutils.collections.RightList;
 
@@ -19,23 +20,28 @@ import java.util.List;
 public abstract class RightContentProvider extends ContentProvider {
     private static final String TAG = RightContentProvider.class.getSimpleName();
 
-    private String baseContentUri;
+    private static String mBaseContentUri;
+
     private RightDBUtils rightDBUtils;
     private List<String> uriTableList;
     private UriMatcher uriMatcher;
 
+    public static Uri getUri(Class<?> classType) {
+        return Uri.parse("content://" + mBaseContentUri + "/" +classType.getSimpleName().toLowerCase());
+    }
+
     public void initProvider(RightDBUtils rightDBUtils, String baseContentUri) {
         this.rightDBUtils = rightDBUtils;
-        this.baseContentUri = baseContentUri;
+        mBaseContentUri = baseContentUri;
         initUriMatcher();
     }
 
     private void initUriMatcher() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriTableList = getTablesName();
-
         for (int i = 0; i < uriTableList.size(); i++) {
-            uriMatcher.addURI(baseContentUri, uriTableList.get(i), i);
+            Log.d(TAG, "URI: " + mBaseContentUri + "/" + uriTableList.get(i));
+            uriMatcher.addURI(mBaseContentUri, uriTableList.get(i).toLowerCase(), i);
         }
     }
 
@@ -57,7 +63,7 @@ public abstract class RightContentProvider extends ContentProvider {
     public String getType(Uri uri) {
         String tableName = uriTableList.get(uriMatcher.match(uri));
         if (tableName != null) {
-            return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + baseContentUri + "/" + tableName;
+            return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + mBaseContentUri + "/" + tableName;
         }
         return null;
     }
@@ -65,26 +71,32 @@ public abstract class RightContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        String tableName = uriTableList.get(uriMatcher.match(uri));
-        if (tableName != null) {
-            return rightDBUtils.getDbHandler().getWritableDatabase()
-                    .query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
+        int match = uriMatcher.match(uri);
+        if (match >= 0) {
+            String tableName = uriTableList.get(match);
+            if (tableName != null) {
+                return rightDBUtils.getDbHandler().getWritableDatabase()
+                        .query(tableName, projection, selection, selectionArgs, null, null, sortOrder);
+            }
         }
         return null;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        String tableName = uriTableList.get(uriMatcher.match(uri));
+        int match = uriMatcher.match(uri);
         Uri resultUri = null;
-        if (tableName != null) {
-            long rowId = rightDBUtils.getDbHandler().getWritableDatabase()
-                    .insert(tableName, null, contentValues);
-            if (rowId > 0) {
-                resultUri = ContentUris.withAppendedId(
-                        Uri.parse("content://" + baseContentUri + "/" + tableName),
-                        rowId
-                );
+        if (match >= 0) {
+            String tableName = uriTableList.get(match);
+            if (tableName != null) {
+                long rowId = rightDBUtils.getDbHandler().getWritableDatabase()
+                        .insert(tableName, null, contentValues);
+                if (rowId > 0) {
+                    resultUri = ContentUris.withAppendedId(
+                            Uri.parse("content://" + mBaseContentUri + "/" + tableName),
+                            rowId
+                    );
+                }
             }
         }
         return resultUri;
@@ -92,20 +104,26 @@ public abstract class RightContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        String tableName = uriTableList.get(uriMatcher.match(uri));
-        if (tableName != null) {
-            return rightDBUtils.getDbHandler().getWritableDatabase()
-                    .delete(tableName, selection, selectionArgs);
+        int match = uriMatcher.match(uri);
+        if (match >= 0) {
+            String tableName = uriTableList.get(match);
+            if (tableName != null) {
+                return rightDBUtils.getDbHandler().getWritableDatabase()
+                        .delete(tableName, selection, selectionArgs);
+            }
         }
         return 0;
     }
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        String tableName = uriTableList.get(uriMatcher.match(uri));
-        if (tableName != null) {
-            return rightDBUtils.getDbHandler().getWritableDatabase()
-                    .update(tableName, contentValues, selection, selectionArgs);
+        int match = uriMatcher.match(uri);
+        if (match >= 0) {
+            String tableName = uriTableList.get(match);
+            if (tableName != null) {
+                return rightDBUtils.getDbHandler().getWritableDatabase()
+                        .update(tableName, contentValues, selection, selectionArgs);
+            }
         }
         return 0;
     }
