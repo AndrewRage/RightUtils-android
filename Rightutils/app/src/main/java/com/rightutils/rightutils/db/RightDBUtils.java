@@ -197,14 +197,19 @@ public abstract class RightDBUtils {
 	}
 
 	private <T> RightList<T> queryListMapper(String query, Class<T> type) {
+		return queryListMapper(db.rawQuery(query, null), type);
+	}
+
+	public <T> RightList<T> queryListMapper(Cursor cursor, Class<T> type) {
 		RightList<T> results = new RightList<T>();
-		Cursor cursor = db.rawQuery(query, null);
-		if (cursor.moveToFirst()) {
-			do {
-				results.add(cursorMapper(cursor, type));
-			} while (cursor.moveToNext());
+		if (cursor != null && !cursor.isClosed()) {
+			if (cursor.moveToFirst()) {
+				do {
+					results.add(cursorMapper(cursor, type));
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
 		}
-		cursor.close();
 		return results;
 	}
 

@@ -11,9 +11,16 @@ public class DBUtils extends RightDBUtils {
 
 	private static final String TAG = DBUtils.class.getSimpleName();
 
-	public static DBUtils newInstance(Context context, String name, int version) {
-		DBUtils dbUtils = new DBUtils();
-		dbUtils.setDBContext(context, name, version);
+	private static DBUtils dbUtils;
+
+	private DBUtils(){
+	}
+
+	public static DBUtils getInstance(Context context) {
+		if (dbUtils == null) {
+			dbUtils = new DBUtils();
+			dbUtils.setDBContext(context, "example.sqlite", 1);
+		}
 		return dbUtils;
 	}
 }

@@ -1,16 +1,27 @@
 package com.rightutils.example.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.rightutils.example.R;
+import com.rightutils.example.applications.ExampleApplication;
+import com.rightutils.example.entities.Company;
+import com.rightutils.example.provider.ExampleProvider;
+import com.rightutils.rightutils.collections.RightList;
 
 /**
  * Created by Anton Maniskevich on 3/31/15.
  */
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +33,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 		findViewById(R.id.btn_right_refresh_listview).setOnClickListener(this);
 		findViewById(R.id.btn_right_refresh_recyclerview).setOnClickListener(this);
 		findViewById(R.id.btn_right_refresh_viewpager).setOnClickListener(this);
+
+		getSupportLoaderManager().initLoader(1, null, this);
 	}
 
 	@Override
@@ -46,5 +59,40 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 				startActivity(new Intent(MainActivity.this, RightSwipeRefreshViewPagerActivity.class));
 				break;
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		getSupportLoaderManager().destroyLoader(1);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		switch (id) {
+			case 1:
+				return new CursorLoader(
+						MainActivity.this,
+						ExampleProvider.getUri(Company.class),
+						null,
+						null,
+						null,
+						null
+				);
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		Log.d(TAG, "onLoadFinished " + loader + " data: " + data);
+		RightList<Company> companyList = ExampleApplication.dbUtils.queryListMapper(data, Company.class);
+		Log.d(TAG, "companyList: " + companyList);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		Log.d(TAG, "onLoaderReset " + loader);
 	}
 }
