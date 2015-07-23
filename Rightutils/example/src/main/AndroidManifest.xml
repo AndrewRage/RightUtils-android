@@ -35,6 +35,11 @@
 				  android:label="Viewpager RightSwipeRefresh">
 		</activity>
 		<uses-library android:name="android.test.runner"/>
+		<provider
+			android:authorities="${applicationId}.provider"
+			android:name=".provider.ExampleProvider"
+			android:enabled="true"
+			android:exported="false" />
 	</application>
 
 	<instrumentation android:name="android.test.InstrumentationTestRunner"

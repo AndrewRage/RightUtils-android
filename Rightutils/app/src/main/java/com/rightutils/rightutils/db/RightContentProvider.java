@@ -27,7 +27,9 @@ public abstract class RightContentProvider extends ContentProvider {
     private UriMatcher uriMatcher;
 
     public static Uri getUri(Class<?> classType) {
-        return Uri.parse("content://" + mBaseContentUri + "/" +classType.getSimpleName().toLowerCase());
+
+        return Uri.parse("content://" + mBaseContentUri + "/"
+                + new RightContentUtils().getTableName(classType).toLowerCase());
     }
 
     public void initProvider(RightDBUtils rightDBUtils, String baseContentUri) {

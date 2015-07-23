@@ -16,6 +16,7 @@ import com.rightutils.example.applications.ExampleApplication;
 import com.rightutils.example.entities.Company;
 import com.rightutils.example.provider.ExampleProvider;
 import com.rightutils.rightutils.collections.RightList;
+import com.rightutils.rightutils.db.RightContentUtils;
 
 /**
  * Created by Anton Maniskevich on 3/31/15.
@@ -87,7 +88,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		Log.d(TAG, "onLoadFinished " + loader + " data: " + data);
-		RightList<Company> companyList = ExampleApplication.dbUtils.queryListMapper(data, Company.class);
+		RightList<Company> companyList = new RightContentUtils().cursorMapper(data, Company.class);
 		Log.d(TAG, "companyList: " + companyList);
 	}
 

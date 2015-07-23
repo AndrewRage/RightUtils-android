@@ -200,7 +200,7 @@ public abstract class RightDBUtils {
 		return queryListMapper(db.rawQuery(query, null), type);
 	}
 
-	public <T> RightList<T> queryListMapper(Cursor cursor, Class<T> type) {
+	protected <T> RightList<T> queryListMapper(Cursor cursor, Class<T> type) {
 		RightList<T> results = new RightList<T>();
 		if (cursor != null && !cursor.isClosed()) {
 			if (cursor.moveToFirst()) {
@@ -269,7 +269,7 @@ public abstract class RightDBUtils {
 		}
 	}
 
-	private <T> String getTableName(Class<T> type) {
+	public <T> String getTableName(Class<T> type) {
 		String tableName = type.getSimpleName();
 		if (type.isAnnotationPresent(TableName.class)) {
 			tableName = type.getAnnotation(TableName.class).value();
