@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.rightutils.rightutils.collections.RightList;
@@ -34,7 +35,11 @@ public abstract class RightContentProvider extends ContentProvider {
 
     public void initProvider(RightDBUtils rightDBUtils, String baseContentUri) {
         this.rightDBUtils = rightDBUtils;
-        mBaseContentUri = baseContentUri;
+        if (baseContentUri.startsWith("content://")) {
+            mBaseContentUri = baseContentUri.substring(10);
+        } else {
+            mBaseContentUri = baseContentUri;
+        }
         initUriMatcher();
     }
 
@@ -58,11 +63,13 @@ public abstract class RightContentProvider extends ContentProvider {
                 c.moveToNext();
             }
         }
+
+        c.close();
         return tablesNames;
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         String tableName = uriTableList.get(uriMatcher.match(uri));
         if (tableName != null) {
             return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + mBaseContentUri + "/" + tableName;
@@ -71,7 +78,7 @@ public abstract class RightContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
         int match = uriMatcher.match(uri);
         if (match >= 0) {
@@ -85,7 +92,7 @@ public abstract class RightContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         int match = uriMatcher.match(uri);
         Uri resultUri = null;
         if (match >= 0) {
@@ -105,7 +112,7 @@ public abstract class RightContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int match = uriMatcher.match(uri);
         if (match >= 0) {
             String tableName = uriTableList.get(match);
@@ -118,7 +125,7 @@ public abstract class RightContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         int match = uriMatcher.match(uri);
         if (match >= 0) {
             String tableName = uriTableList.get(match);

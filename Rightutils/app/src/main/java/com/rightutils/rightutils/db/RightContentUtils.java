@@ -8,7 +8,7 @@ import com.rightutils.rightutils.collections.RightList;
 /**
  * Created by rage on 23.07.15.
  */
-public final class RightContentUtils extends RightDBUtils {
+public class RightContentUtils extends RightDBUtils {
 
     @Override
     protected void setDBContext(Context context, String name, int version) {
