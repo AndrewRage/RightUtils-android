@@ -1,6 +1,5 @@
 package com.rightutils.rightutils.widgets;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -19,18 +18,17 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 
 /**
  * Created by Anton Maniskevich on 5/13/15.
  */
-public class RightSwipeRefreshLayour extends ViewGroup {
+public class RightSwipeRefreshLayout extends ViewGroup {
 	// Maps to ProgressBar.Large style
 	public static final int LARGE = MaterialProgressDrawable.LARGE;
 	// Maps to ProgressBar default style
 	public static final int DEFAULT = MaterialProgressDrawable.DEFAULT;
 
-	private static final String TAG = RightSwipeRefreshLayour.class.getSimpleName();
+	private static final String TAG = RightSwipeRefreshLayout.class.getSimpleName();
 
 	private static final int MAX_ALPHA = 255;
 	private static final int STARTING_PROGRESS_ALPHA = (int) (.3f * MAX_ALPHA);
@@ -243,11 +241,11 @@ public class RightSwipeRefreshLayour extends ViewGroup {
 		bottomCircleView.setImageDrawable(bottomProgress);
 	}
 
-	public RightSwipeRefreshLayour(Context context) {
+	public RightSwipeRefreshLayout(Context context) {
 		this(context, null);
 	}
 
-	public RightSwipeRefreshLayour(Context context, AttributeSet attrs) {
+	public RightSwipeRefreshLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		if (isInEditMode()) {
 			return;
@@ -322,7 +320,7 @@ public class RightSwipeRefreshLayour extends ViewGroup {
 		return android.os.Build.VERSION.SDK_INT < 11;
 	}
 
-	public void setRefreshing(boolean refreshing, @RightSwipeRefreshLayour.RefreshType int refreshType) {
+	public void setRefreshing(boolean refreshing, @RightSwipeRefreshLayout.RefreshType int refreshType) {
 		if (refreshType == TOP_REFRESH) {
 			if (refreshing && mRefreshing != refreshing) {
 				// scale and show

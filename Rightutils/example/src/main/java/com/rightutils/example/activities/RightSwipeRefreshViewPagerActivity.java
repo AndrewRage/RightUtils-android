@@ -1,21 +1,16 @@
 package com.rightutils.example.activities;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.rightutils.example.R;
 import com.rightutils.example.fragments.RightSwipeRefreshFragment;
 import com.rightutils.rightutils.collections.RightList;
-import com.rightutils.rightutils.widgets.RightSwipeRefreshLayour;
 
 /**
  * Created by Anton Maniskevich on 5/13/15.

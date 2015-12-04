@@ -4,7 +4,7 @@
 			  android:layout_height="match_parent"
 			  android:orientation="vertical">
 
-	<com.rightutils.rightutils.widgets.RightSwipeRefreshLayour
+	<com.rightutils.rightutils.widgets.RightSwipeRefreshLayout
 		android:id="@+id/refresh"
 		android:layout_width="match_parent"
 		android:layout_weight="1"
@@ -16,6 +16,6 @@
 			android:choiceMode="singleChoice"
 			android:divider="@android:color/transparent"
 			android:dividerHeight="1dp"/>
-	</com.rightutils.rightutils.widgets.RightSwipeRefreshLayour>
+	</com.rightutils.rightutils.widgets.RightSwipeRefreshLayout>
 
 </LinearLayout>
