@@ -2,15 +2,16 @@ package com.rightutils.rightutils.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Anton Maniskevich on 12/5/14.
  */
-public class SupportRightActionBarActivity extends ActionBarActivity {
+public class SupportRightActionBarActivity extends AppCompatActivity {
 
 	private int fragmentContainer;
 	private Fragment initFragment;
@@ -52,6 +53,7 @@ public class SupportRightActionBarActivity extends ActionBarActivity {
 		}
 	}
 
+	@Nullable
 	public Fragment getLastFragment() {
 		if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
 			return null;
