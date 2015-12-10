@@ -595,7 +595,7 @@ public class RightSwipeRefreshLayout extends ViewGroup {
 
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		Log.i(TAG, "onMeasure");
+		//Log.i(TAG, "onMeasure");
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		if (mTarget == null) {
 			ensureTarget();
