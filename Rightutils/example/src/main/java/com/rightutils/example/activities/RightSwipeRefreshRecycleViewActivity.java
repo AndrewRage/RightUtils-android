@@ -6,26 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightutils.example.R;
-import com.rightutils.example.decorator.DividerItemDecoration;
 import com.rightutils.rightutils.collections.RightList;
-import com.rightutils.rightutils.widgets.RightSwipeRefreshLayour;
+import com.rightutils.rightutils.widgets.RightSwipeRefreshLayout;
 
 /**
  * Created by Anton Maniskevich on 5/13/15.
  */
-public class RightSwipeRefreshRecycleViewActivity extends AppCompatActivity implements RightSwipeRefreshLayour.OnRefreshListener {
+public class RightSwipeRefreshRecycleViewActivity extends AppCompatActivity implements RightSwipeRefreshLayout.OnRefreshListener {
 
 	private static final String TAG = RightSwipeRefreshRecycleViewActivity.class.getSimpleName();
-	private RightSwipeRefreshLayour rightSwipeRefreshLayour;
+	private RightSwipeRefreshLayout rightSwipeRefreshLayout;
 	private SimpleAdapter adapter;
 	private LinearLayoutManager mLayoutManager;
 	private RecyclerView mRecyclerView;
@@ -42,14 +38,14 @@ public class RightSwipeRefreshRecycleViewActivity extends AppCompatActivity impl
 		RightList<String> values = RightList.asRightList("100", "101", "102", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114");
 		adapter = new SimpleAdapter(values);
 		mRecyclerView.setAdapter(adapter);
-		rightSwipeRefreshLayour = (RightSwipeRefreshLayour) findViewById(R.id.refresh);
-		rightSwipeRefreshLayour.setOnRefreshListener(this);
+		rightSwipeRefreshLayout = (RightSwipeRefreshLayout) findViewById(R.id.refresh);
+		rightSwipeRefreshLayout.setOnRefreshListener(this);
 	}
 
 
 	@Override
-	public void onRefresh(final @RightSwipeRefreshLayour.RefreshType int refreshType) {
-		rightSwipeRefreshLayour.setRefreshing(true, refreshType);
+	public void onRefresh(final @RightSwipeRefreshLayout.RefreshType int refreshType) {
+		rightSwipeRefreshLayout.setRefreshing(true, refreshType);
 		new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -64,14 +60,14 @@ public class RightSwipeRefreshRecycleViewActivity extends AppCompatActivity impl
 			@Override
 			protected void onPostExecute(Void aVoid) {
 				switch (refreshType) {
-					case RightSwipeRefreshLayour.TOP_REFRESH:
+					case RightSwipeRefreshLayout.TOP_REFRESH:
 						int firstValue = Integer.valueOf(adapter.getItem(0));
 						if (firstValue > 90) {
 							adapter.addTop(RightList.asRightList(String.valueOf(firstValue-2), String.valueOf(firstValue-1)));
 						}
 						mLayoutManager.scrollToPositionWithOffset(0, 0);
 						break;
-					case RightSwipeRefreshLayour.BOTTOM_REFRESH:
+					case RightSwipeRefreshLayout.BOTTOM_REFRESH:
 						int lastValue = Integer.valueOf(adapter.getItem(adapter.getItemCount()-1));
 						if (lastValue < 124) {
 							adapter.addToBottom(RightList.asRightList(String.valueOf(lastValue + 1), String.valueOf(lastValue + 2)));
@@ -79,7 +75,7 @@ public class RightSwipeRefreshRecycleViewActivity extends AppCompatActivity impl
 						mLayoutManager.scrollToPositionWithOffset(mLayoutManager.findFirstCompletelyVisibleItemPosition()+1,0);
 						break;
 				}
-				rightSwipeRefreshLayour.setRefreshing(false, refreshType);
+				rightSwipeRefreshLayout.setRefreshing(false, refreshType);
 			}
 		}.execute();
 	}

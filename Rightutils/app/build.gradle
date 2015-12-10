@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 21
-	buildToolsVersion "21.1.2"
+	compileSdkVersion 22
+	buildToolsVersion "23.0.2"
 
 	defaultConfig {
 		minSdkVersion 8
@@ -34,7 +34,7 @@ dependencies {
 	compile 'com.android.support:support-v4:22.1.1'
 	compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
 	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-	compile 'com.github.andreyrage:leftdb:1.1'
+	compile 'com.github.andreyrage:leftdb:1.2'
 }
 
 apply from: 'publish.gradle'
