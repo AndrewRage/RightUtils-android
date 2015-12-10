@@ -10,6 +10,6 @@ repositories {
 }
     
 dependencies {
-  compile 'com.github.andreyrage:rightutils:2.0.1'
+  compile 'com.github.andreyrage:rightutils:2.0.2'
 }
 ```
