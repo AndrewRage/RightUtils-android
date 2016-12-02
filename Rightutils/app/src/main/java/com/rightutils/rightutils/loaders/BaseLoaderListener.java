@@ -13,6 +13,6 @@ public abstract class BaseLoaderListener<T> implements LoaderListener<T> {
 	}
 
 	@Override
-	public void onCancelLoad() {
+	public void onCancelLoadListener() {
 	}
 }

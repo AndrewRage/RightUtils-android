@@ -50,7 +50,7 @@ public class ProgressDialogFragment<T> extends AbstractProgressDialogFragment<T>
 
 				@Override
 				public void run() {
-					taskLoaderListener.onCancelLoad();
+					taskLoaderListener.onCancelLoadListener();
 
 				}
 			});
