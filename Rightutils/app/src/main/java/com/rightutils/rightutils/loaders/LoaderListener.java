@@ -7,5 +7,5 @@ public interface LoaderListener<T> {
 
 	void onLoadFinished(FragmentActivity activity, Fragment fragmentContainer, T data, BaseLoader<T> loader);
 
-	void onCancelLoad();
+	void onCancelLoadListener();
 }

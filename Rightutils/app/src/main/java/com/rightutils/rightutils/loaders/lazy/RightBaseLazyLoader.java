@@ -202,7 +202,7 @@ abstract public class RightBaseLazyLoader extends BaseLoader<Boolean> implements
     }
 
     @Override
-    public void onCancelLoad() {
+    public void onCancelLoadListener() {
         cancelLoad();
         if(otherOptionalCallbacks != null){
             try {
